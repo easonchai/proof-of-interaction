@@ -58,13 +58,13 @@ contract ProofOfInteraction {
     function selectWinner(bytes32 winningHash) public {
         bytes memory signature = hashToSignature[winningHash];
         require(signature.length != 0, "Interaction has not been made before!");
-        require(hashToAddress[encryptedData] != address(0x0), "Interaction has not been made before!");
+        require(hashToAddress[winningHash] != address(0x0), "Interaction has not been made before!");
         require(oracle.validations(winningHash) == true, "Oracle has not validated this interaction yet or it's invalid!");
 
         // Do some logic to payout the winner or mint them an NFT, etc
         // In this example we mint the location based NFT
-        nftContract.mint(hashToAddress[winningHash]);
-     }
+        nftContract.mint(hashToAddress[winningHash], uint256(winningHash));
+    }
 
     // Perhaps you can have a function that can be used to verify the signer of the message to handle reward payouts, etc
     function verifySigner(
