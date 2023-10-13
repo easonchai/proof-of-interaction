@@ -21,15 +21,26 @@ async function main() {
   console.log(`🧪 Proof of Interaction contract deployed to: ${poi.target}\n`);
 
   const oracle = await ethers.deployContract("Oracle", [[address]]);
+  await oracle.waitForDeployment();
   console.log(`🔎 Oracle contract deployed to: ${oracle.target}\n`);
 
-  const nft = await ethers.deployContract("LocationBasedMinting", [
-    "https://google.com/",
-    address,
-  ]);
+  const LocationBasedMinting = await ethers.getContractFactory(
+    "LocationBasedMinting"
+  );
+  const nft = await LocationBasedMinting.deploy("https://google.com/", address);
+  await nft.waitForDeployment();
   console.log(
     `📍 Location-based Minting NFT contract deployed to: ${nft.target}\n`
   );
+
+  // const tx = {
+  //   nonce: 4,
+  //   to: ethers.ZeroAddress,
+  //   data: "0x",
+  //   gasPrice: ethers.parseEther("0.00000000010000005"),
+  // }; // costs 21000 gas
+
+  // signer.sendTransaction(tx);
 
   poi.setNFTAddress(nft.target);
   poi.setOracleAddress(oracle.target);
