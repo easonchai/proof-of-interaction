@@ -1,17 +1,35 @@
 import Image from "next/image";
 import { DM_Sans } from "next/font/google";
 import ProofOfInteraction from "@/contract/ProofOfInteraction";
-import { useSigner, useContract, useContractWrite } from "@thirdweb-dev/react";
+import {
+  useSigner,
+  useContract,
+  useContractWrite,
+  ConnectWallet,
+  Web3Button,
+} from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { API } from "../../utils/axios";
 import { generatePoiMessageTemplate } from "../../utils/poi";
+import { useSearchParams } from "next/navigation";
+import clsx from "clsx";
 
 const font = DM_Sans({ subsets: ["latin"] });
+const useHasHydrated = () => {
+  const [hasHydrated, setHasHydrated] = useState<boolean>(false);
+
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
+
+  return hasHydrated;
+};
 
 export default function Home() {
-  const [geolocation, setGeolocation] = useState<GeolocationCoordinates>();
+  const searchParams = useSearchParams();
+  const hasHydrated = useHasHydrated();
   const signer = useSigner();
   const { contract } = useContract(
     ProofOfInteraction.address,
@@ -21,6 +39,10 @@ export default function Home() {
     contract,
     "saveInteraction"
   );
+
+  const e = searchParams.get("e");
+  const c = searchParams.get("c");
+  const [geolocation, setGeolocation] = useState<GeolocationCoordinates>();
 
   const saveAction = async () => {
     const e = "00000000000000000000000000000000";
@@ -37,18 +59,18 @@ export default function Home() {
       const signature = await signer.signMessage(message);
 
       if (contract) {
-        if (geolocation) {
-          API.post("/validation/api", {
-            e: "8177C60FE1BA3A2C78640C800CF1B961",
-            c: "55C27913700F48BD",
-            geolocation: {
-              latitude: geolocation.latitude,
-              longitude: geolocation.longitude,
-              altitude: geolocation.altitude,
-            },
-            hash,
-          }).then(() => toast.success("Validation saved via API"));
-        }
+        API.post("/validation/api", {
+          e: "8177C60FE1BA3A2C78640C800CF1B961",
+          c: "55C27913700F48BD",
+          geolocation: geolocation
+            ? {
+                latitude: geolocation.latitude,
+                longitude: geolocation.longitude,
+                altitude: geolocation.altitude,
+              }
+            : undefined,
+          hash,
+        }).then(() => toast.success("Validation saved via API"));
 
         await mutateAsync({
           args: [hash, signature], // We store hash and signature so we can recover the original signer
@@ -79,7 +101,7 @@ export default function Home() {
     }
   }, []);
 
-  return (
+  return hasHydrated ? (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${font.className}`}
     >
@@ -117,6 +139,28 @@ export default function Home() {
           priority
         />
       </div>
+
+      <ConnectWallet switchToActiveChain />
+      {e && c ? (
+        <Web3Button
+          className={clsx(isLoading ? "opacity-70 cursor-not-allowed" : "")}
+          isDisabled={isLoading}
+          contractAddress={ProofOfInteraction.address}
+          contractAbi={ProofOfInteraction.abi}
+          action={saveAction}
+          onSuccess={() => {
+            toast.success("Signature saved on chain!");
+          }}
+          onError={(error: any) => {
+            if (error) {
+              console.error({ error });
+              toast.error("Uh oh! Something wen't wrong!");
+            }
+          }}
+        >
+          Save Interaction
+        </Web3Button>
+      ) : null}
 
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
         <a
@@ -188,5 +232,7 @@ export default function Home() {
         </a>
       </div>
     </main>
+  ) : (
+    <></>
   );
 }

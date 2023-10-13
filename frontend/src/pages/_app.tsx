@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 
 const config = {
   chain: OptimismGoerli,
-  factoryAddress: "0x687A7B2A09EBCE0aaEEFd660dACe6d6F96a57375",
+  factoryAddress: "0x9fc5491Dc9D5166edeaCB0C10DB1f87F3312202b",
   clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
   gasless: true,
 };
