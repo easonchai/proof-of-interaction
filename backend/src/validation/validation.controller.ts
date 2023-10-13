@@ -21,9 +21,11 @@ export class ValidationController {
       const data = await this.validationService.validateParams(body.e, body.c);
       if (data) {
         await this.validationService.saveHashedData(body, true);
+        console.log('✅ Data saved successfully');
       }
     } catch (err) {
       await this.validationService.saveHashedData(body, false);
+      console.log('❌ Data invalid');
     }
   }
 
@@ -34,9 +36,11 @@ export class ValidationController {
       const data = await this.validationService.validateParams(body.e, body.c);
       if (data) {
         await this.validationService.saveHashedData(body, true);
+        console.log('✅ Data saved successfully');
       }
     } catch (err) {
       await this.validationService.saveHashedData(body, false);
+      console.log('❌ Data invalid');
     }
   }
 

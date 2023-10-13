@@ -12,5 +12,5 @@ export class ValidationRequestDto {
 
   @IsJSON()
   @IsOptional()
-  geolocation?: any;
+  geolocation?: string;
 }
