@@ -3,7 +3,6 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract LocationBasedMinting is ERC721 {
-    uint256 public tokenId = 0;
     address public owner;
     string public baseURI;
 
@@ -17,10 +16,8 @@ contract LocationBasedMinting is ERC721 {
         owner = _owner;
     }
 
-    function mint(address to) public onlyOwner {
-        uint256 _tokenId = tokenId;
-        tokenId += 1;
-        _mint(to, _tokenId);
+    function mint(address to, uint256 tokenId) public onlyOwner {
+        _mint(to, tokenId);
     }
 
     function _baseURI() override internal view virtual returns (string memory) {
