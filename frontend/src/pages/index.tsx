@@ -1,17 +1,91 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Image from "next/image";
+import { DM_Sans } from "next/font/google";
+import ProofOfInteraction from "@/contract/ProofOfInteraction";
+import { useSigner, useContract, useContractWrite } from "@thirdweb-dev/react";
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import toast from "react-hot-toast";
+import { API } from "../../utils/axios";
+import { generatePoiMessageTemplate } from "../../utils/poi";
 
-const inter = Inter({ subsets: ['latin'] })
+const font = DM_Sans({ subsets: ["latin"] });
 
 export default function Home() {
+  const [geolocation, setGeolocation] = useState<GeolocationCoordinates>();
+  const signer = useSigner();
+  const { contract } = useContract(
+    ProofOfInteraction.address,
+    ProofOfInteraction.abi
+  );
+  const { mutateAsync, isLoading } = useContractWrite(
+    contract,
+    "saveInteraction"
+  );
+
+  const saveAction = async () => {
+    const e = "00000000000000000000000000000000";
+    const c = "0000000000000000";
+    if (signer) {
+      // const encryptedData = `e=${e}&c=${c}`;
+      const encryptedData = new Date().toString();
+      const message = generatePoiMessageTemplate(encryptedData);
+
+      // utils.id is equivalent to utils.keccak256(utils.toUtf8Bytes(VALUE))
+      const hash = ethers.utils.id(
+        `\x19Ethereum Signed Message:\n${message.length}${message}`
+      );
+      const signature = await signer.signMessage(message);
+
+      if (contract) {
+        if (geolocation) {
+          API.post("/validation/api", {
+            e: "8177C60FE1BA3A2C78640C800CF1B961",
+            c: "55C27913700F48BD",
+            geolocation: {
+              latitude: geolocation.latitude,
+              longitude: geolocation.longitude,
+              altitude: geolocation.altitude,
+            },
+            hash,
+          }).then(() => toast.success("Validation saved via API"));
+        }
+
+        await mutateAsync({
+          args: [hash, signature], // We store hash and signature so we can recover the original signer
+        });
+
+        console.log(hash, "=>", signature);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (data) => {
+          setGeolocation(data.coords);
+          toast.success("📍 Location Based NFT Minting enabled!");
+        },
+        (error) => {
+          console.error(error);
+          setGeolocation(undefined);
+          if (error.message === "User denied Geolocation") {
+            toast(
+              "Please enable location services to access Location Based NFTs 🌎"
+            );
+          }
+        }
+      );
+    }
+  }, []);
+
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center justify-between p-24 ${font.className}`}
     >
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
+          Proof Of Interaction
         </p>
         <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
           <a
@@ -20,7 +94,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By POISON 🔥{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -52,7 +126,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
+            Docs{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -69,7 +143,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
+            Learn{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -86,7 +160,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
+            Templates{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -103,7 +177,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
+            Deploy{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -114,5 +188,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }
