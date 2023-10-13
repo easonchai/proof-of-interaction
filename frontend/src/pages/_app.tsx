@@ -4,6 +4,8 @@ import {
   ThirdwebProvider,
   smartWallet,
   localWallet,
+  embeddedWallet,
+  metamaskWallet,
 } from "@thirdweb-dev/react";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
@@ -28,6 +30,8 @@ export default function App({ Component, pageProps }: AppProps) {
           }),
           config
         ),
+        smartWallet(embeddedWallet(), config),
+        smartWallet(metamaskWallet(), config),
       ]}
       // sdkOptions={{
       //   gassless: {
