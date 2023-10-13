@@ -7,14 +7,14 @@ contract LocationBasedMinting is ERC721 {
     address public owner;
     string public baseURI;
 
-    constructor(string memory _baseUri, address _owner) ERC721("Location-Based Proof Of Interaction", "POI") {
-        baseURI = _baseUri;
-        owner = _owner;
-    }
-
     modifier onlyOwner() {
         require(msg.sender == owner, "Only owner can mint");
         _;
+    }
+
+    constructor(string memory _baseUri, address _owner) ERC721("Location-Based Proof Of Interaction", "POI") {
+        baseURI = _baseUri;
+        owner = _owner;
     }
 
     function mint(address to) public onlyOwner {

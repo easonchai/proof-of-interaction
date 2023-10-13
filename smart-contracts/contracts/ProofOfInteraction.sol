@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
+import "./IOracle.sol";
+import "./ILocationBasedMinting.sol";
 
 contract ProofOfInteraction {
     /**
@@ -18,6 +20,14 @@ contract ProofOfInteraction {
     mapping(bytes32 => address) public hashToAddress;
     address public owner;
 
+    IOracle public oracle;
+    ILocationBasedMinting public nftContract;
+
+    modifier onlyOwner () {
+        require(msg.sender == owner, "Only owner can call this function.");
+        _;
+    }
+
     event Interaction(address interactor, bytes32 data);
 
     // In this example, we will use verifier info as the verifierUrl
@@ -26,25 +36,35 @@ contract ProofOfInteraction {
         owner = msg.sender;
     }
 
-    modifier onlyOwner () {
-        require(msg.sender == owner, "Only owner can call this function.");
-        _;
-    }
-
+    /**
+     * Saves an interaction. Has no side effect, since it does not rely on external data or anything.
+     * Because theres no side effect, we will not give out any prizes here to send any money, etc.
+     */
     function saveInteraction(bytes32 encryptedData, bytes memory signature) public {
         require(hashToSignature[encryptedData].length == 0, "Interaction has been made before!");
         require(hashToAddress[encryptedData] == address(0x0), "Interaction has been made before!");
 
+        address realSigner = recoverSigner(encryptedData, signature);
         hashToSignature[encryptedData] = signature;
-        hashToAddress[encryptedData] = msg.sender;
+        hashToAddress[encryptedData] = realSigner;
 
-        emit Interaction(recoverSigner(encryptedData, signature), encryptedData);
+        emit Interaction(realSigner, encryptedData);
 
         // Perform some logic to choose a winner? Check that you're the first? Match a specific hash?
     }
 
     // Just imagine how you can now automate winners to be selected because of this 'Proof of Interaction'
     // Or make it fully callable by everyone and reward the caller with a prize (like calling liquidations)
+    function selectWinner(bytes32 winningHash) public {
+        bytes memory signature = hashToSignature[winningHash];
+        require(signature.length != 0, "Interaction has not been made before!");
+        require(hashToAddress[encryptedData] != address(0x0), "Interaction has not been made before!");
+        require(oracle.validations(winningHash) == true, "Oracle has not validated this interaction yet or it's invalid!");
+
+        // Do some logic to payout the winner or mint them an NFT, etc
+        // In this example we mint the location based NFT
+        nftContract.mint(hashToAddress[winningHash]);
+     }
 
     // Perhaps you can have a function that can be used to verify the signer of the message to handle reward payouts, etc
     function verifySigner(
@@ -79,5 +99,13 @@ contract ProofOfInteraction {
         }
 
         // implicitly return (r, s, v)
+    }
+
+    function setOracleAddress(address oracleAddress) external onlyOwner {
+        oracle = IOracle(oracleAddress);
+    }
+
+    function setNFTAddress(address nftAddress) external onlyOwner {
+        nftContract = ILocationBasedMinting(nftAddress);
     }
 }
