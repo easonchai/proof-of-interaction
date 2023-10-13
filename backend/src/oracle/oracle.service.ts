@@ -23,20 +23,23 @@ export class OracleService {
       topics: [ethers.utils.id('Interaction(address,bytes32)')],
     };
 
-    provider.on(filter, this.handleInteractionEvent);
-
+    provider.on(filter, (event) =>
+      this.handleInteractionEvent(event, validationService),
+    );
     provider.getBlockNumber().then(this.printBlockNumber);
   }
 
-  logger: LoggerService = new Logger(OracleService.name);
   wallet: ethers.Wallet;
   oracleContract: ethers.Contract;
 
   printBlockNumber(blockNumber: number) {
-    this.logger.log(`📦 Provider connected, block number: ${blockNumber}`);
+    console.log(`📦 Provider connected, block number: ${blockNumber}`);
   }
 
-  async handleInteractionEvent(event: any) {
+  async handleInteractionEvent(
+    event: any,
+    validationService: ValidationService,
+  ) {
     const eventInterface = new ethers.utils.Interface(ProofOfInteraction.abi);
 
     const parsedEvent = eventInterface.parseLog(event);
@@ -51,11 +54,12 @@ export class OracleService {
     );
     // Assume you make an API call to an external API to validate the data
     // For this instance, it would be locally, so I will just call a function
-    const result = await this.validationService.validateHashedData(hashedData);
-    await this.oracleContract.saveValidationRequest([
+    const result = await validationService.validateHashedData(hashedData);
+    await this.oracleContract.saveValidationRequest(
       `https://example-api.com/validate/${result}`,
+      hashedData,
       result,
-    ]);
+    );
     console.log('✅ Request saved!');
   }
 }
