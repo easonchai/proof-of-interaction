@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { OracleService } from './oracle.service';
+import { ValidationModule } from 'src/validation/validation.module';
 
 @Module({
-  providers: [OracleService]
+  imports: [ValidationModule],
+  providers: [OracleService],
+  exports: [OracleService],
 })
 export class OracleModule {}
