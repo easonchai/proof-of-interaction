@@ -63,21 +63,21 @@ export default function Home() {
 
       if (contract) {
         const payload = {
-          e: "8177C60FE1BA3A2C78640C800CF1B961",
-          c: "55C27913700F48BD",
+          e,
+          c,
           geolocation: geolocation
-            ? {
+            ? JSON.stringify({
                 latitude: geolocation.latitude,
                 longitude: geolocation.longitude,
                 altitude: geolocation.altitude,
-              }
+              })
             : undefined,
           encryptedData: hash,
         } as ValidationRequestDto;
 
-        API.post("/validation/api", payload).then(() =>
-          toast.success("Validation saved on API")
-        );
+        API.post("/validation/api", payload)
+          .then(() => toast.success("Validation saved on API"))
+          .catch(() => toast.error("Error validating with API"));
 
         await mutateAsync({
           args: [hash, signature], // We store hash and signature so we can recover the original signer
