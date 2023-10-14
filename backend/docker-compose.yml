@@ -38,6 +38,9 @@ services:
       - 'traefik.http.routers.backend.rule=Host(`api.proofofinteraction.xyz`)'
       - 'traefik.http.routers.backend.tls.certresolver=myresolver'
       - 'traefik.http.services.backend.loadbalancer.server.port=3000'
+    volumes:
+      - ./prisma/dev.db:/app/dev.db
+      - ./prisma:/app/prisma
     restart: on-failure
     env_file:
       - .env
