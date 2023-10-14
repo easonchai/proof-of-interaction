@@ -1,5 +1,9 @@
 import "@/styles/globals.css";
-import { OptimismGoerli } from "@thirdweb-dev/chains";
+import {
+  MantleTestnet,
+  OptimismGoerli,
+  TaikoJolnirL2,
+} from "@thirdweb-dev/chains";
 import {
   ThirdwebProvider,
   smartWallet,
@@ -22,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThirdwebProvider
       clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
       activeChain={OptimismGoerli}
-      supportedChains={[OptimismGoerli]}
+      supportedChains={[OptimismGoerli, TaikoJolnirL2, MantleTestnet]}
       supportedWallets={[
         smartWallet(
           localWallet({
@@ -31,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
           config
         ),
         smartWallet(embeddedWallet(), config),
-        smartWallet(metamaskWallet(), config),
+        metamaskWallet(),
       ]}
       // sdkOptions={{
       //   gassless: {
