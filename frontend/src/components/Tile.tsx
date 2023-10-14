@@ -180,12 +180,12 @@ export default function Tile({ tile, className }: ITile) {
                 : "Claim as NFT"}
             </Web3Button>
             {tile.minted && (
-              <div className="flex flex-col gap-y-4 my-2">
+              <div className="flex flex-col gap-y-3 my-2 w-full items-center justify-center">
                 <Link
                   href={`https://api.proofofinteraction.xyz/nft/${tile.tokenId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className=""
+                  className="text-center text-brand-secondary text-sm"
                 >
                   View Metadata
                 </Link>
@@ -193,7 +193,7 @@ export default function Tile({ tile, className }: ITile) {
                   href={`https://testnets.opensea.io/assets/optimism-goerli/0x05c03a8bb760cfbba289a19086d9bb0a766da261/${tile.tokenId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className=""
+                  className="text-center text-brand-secondary text-sm"
                 >
                   View on Opensea
                 </Link>
