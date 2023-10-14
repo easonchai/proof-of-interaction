@@ -19,7 +19,7 @@ const useHasHydrated = () => {
 };
 const POI_ADDRESS = ProofOfInteraction.address;
 const ORACLE_ADDRESS = Oracle.address;
-const NFT_ADDRESS = "0xA1ef12f27d4F6B330eE1e75Ee5274E8D0f844AEf";
+const NFT_ADDRESS = "0x05c03A8bb760cfbBA289A19086d9BB0A766da261";
 const AA_ADDRESS = "0x9fc5491dc9d5166edeacb0c10db1f87f3312202b";
 const EXPLORER_URL = "https://goerli-optimism.etherscan.io/address";
 

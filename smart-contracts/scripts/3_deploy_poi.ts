@@ -32,13 +32,9 @@ async function main() {
   );
   const poiVerifierUrl = "https://api.proofofinteraction.xyz/validation/";
   const nftBaseUri = "https://api.proofofinteraction.com/nft/";
-  const poi = await ethers.deployContract(
-    "ProofOfInteraction",
-    [poiVerifierUrl],
-    {
-      gasLimit: "0x1000000",
-    }
-  );
+  const poi = await ethers.deployContract("ProofOfInteraction", [
+    poiVerifierUrl,
+  ]);
   await poi.waitForDeployment();
 
   if (
@@ -53,44 +49,23 @@ async function main() {
   }
   console.log(`🧪 Proof of Interaction contract deployed to: ${poi.target}\n`);
 
-  const oracle = await ethers.deployContract("Oracle", [[address]], {
-    gasLimit: "0x1000000",
-  });
+  const oracle = await ethers.deployContract("Oracle", [[address]]);
   await oracle.waitForDeployment();
   console.log(`🔎 Oracle contract deployed to: ${oracle.target}\n`);
 
   const LocationBasedMinting = await ethers.getContractFactory(
     "LocationBasedMinting"
   );
-  const nft = await LocationBasedMinting.deploy(nftBaseUri, address, {
-    gasLimit: "0x1000000",
-  });
+  const nft = await LocationBasedMinting.deploy(nftBaseUri, address);
   await nft.waitForDeployment();
   console.log(
     `📍 Location-based Minting NFT contract deployed to: ${nft.target}\n`
   );
 
-  // const tx = {
-  //   nonce: 4,
-  //   to: ethers.ZeroAddress,
-  //   data: "0x",
-  //   gasPrice: ethers.parseEther("0.00000000010000005"),
-  // }; // costs 21000 gas
-
-  // signer.sendTransaction(tx);
-
-  await poi.setNFTAddress(nft.target, {
-    gasLimit: "0x1000000",
-  });
-  await poi.setOracleAddress(oracle.target, {
-    gasLimit: "0x1000000",
-  });
-  await nft.setOwner(address, {
-    gasLimit: "0x1000000",
-  });
-  await nft.setMinter(poi.target, {
-    gasLimit: "0x1000000",
-  });
+  await poi.setNFTAddress(nft.target);
+  await poi.setOracleAddress(oracle.target);
+  await nft.setOwner(address);
+  await nft.setMinter(poi.target);
   console.log("✅ Proof of Interaction contract configured\n");
 
   console.log(
@@ -125,22 +100,23 @@ async function main() {
     for (let i = 0; i < 35; i++) {
       const wallet = pickRandomWallet();
       const message = await generateMessage(randomData, wallet);
-      await poi.saveInteraction(message.hash, message.signature, {
-        gasLimit: "0x1000000",
-      });
+      await poi.saveInteraction(message.hash, message.signature);
       await oracle.saveValidationRequest(
         `https://api.proofofinteraction.xyz/validation/${message.hash}`,
         message.hash,
-        true,
-        {
-          gasLimit: "0x1000000",
-        }
+        true
       );
-      await poi.selectWinner(message.hash, {
-        gasLimit: "0x1000000",
-      });
+      await poi.selectWinner(message.hash);
     }
   }
+
+  // const tx = {
+  //   nonce: 47,
+  //   to: ethers.ZeroAddress,
+  //   data: "0x",
+  //   gasPrice: ethers.parseEther("0.00000000010000005"),
+  // }; // costs 21000 gas
+  // await signer.sendTransaction(tx);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

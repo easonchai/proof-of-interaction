@@ -1,7 +1,7 @@
 const ProofOfInteraction = {
   _format: 'hh-sol-artifact-1',
   contractName: 'ProofOfInteraction',
-  address: '0x368E5cFAcFe5605091C33520d9bf64fbEAEA725C',
+  address: '0x8955916B04d3f0344a16334E540eAcBcC506b1fB',
   sourceName: 'contracts/ProofOfInteraction.sol',
   abi: [
     {
