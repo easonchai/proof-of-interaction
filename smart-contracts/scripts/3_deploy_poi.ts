@@ -64,7 +64,6 @@ async function main() {
 
   await poi.setNFTAddress(nft.target);
   await poi.setOracleAddress(oracle.target);
-  await nft.setOwner(address);
   await nft.setMinter(poi.target);
   console.log("✅ Proof of Interaction contract configured\n");
 
@@ -111,7 +110,7 @@ async function main() {
   }
 
   // const tx = {
-  //   nonce: 47,
+  //   nonce: 51,
   //   to: ethers.ZeroAddress,
   //   data: "0x",
   //   gasPrice: ethers.parseEther("0.00000000010000005"),

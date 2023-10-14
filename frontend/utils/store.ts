@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools, persist, subscribeWithSelector } from "zustand/middleware";
 // import type {} from "@redux-devtools/extension"; // required for devtools typing
 
 export interface Badge {
@@ -59,44 +59,56 @@ const defaultBadges: Badge[] = [
 
 const useGameStore = create<GameState>()(
   devtools(
-    persist(
-      (set) => ({
-        badges: [...defaultBadges],
-        history: {},
-        collect: (badge) =>
-          set((state) => {
-            const found = state.badges.findIndex((b) => b.id === badge.id);
-            if (found !== -1) {
-              state.badges[found].collected = true;
-              state.badges[found].tokenId = badge.tokenId;
-              state.badges[found].position = badge.position;
-            }
-            return { badges: state.badges };
-          }),
-        mint: (badge) =>
-          set((state) => {
-            const found = state.badges.findIndex(
-              (b) => b.tokenId === badge.tokenId
-            );
-            if (found !== -1) {
-              state.badges[found].minted = true;
-            }
-            return { badges: state.badges };
-          }),
-        reset: () =>
-          set({
-            badges: [...defaultBadges],
-          }),
-        trackHistory: (data: string) => {
-          set((state) => {
-            state.history[data] = true;
-            return { history: state.history };
-          });
-        },
-      }),
-      {
-        name: "poi-storage",
-      }
+    subscribeWithSelector(
+      persist(
+        (set, get) => ({
+          badges: [...defaultBadges],
+          history: {},
+          collect: (badge) =>
+            set((state) => {
+              const found = state.badges.findIndex((b) => b.id === badge.id);
+              const array = [...state.badges];
+              if (found !== -1) {
+                const temp = {
+                  ...state.badges[found],
+                  collected: true,
+                  tokenId: badge.tokenId,
+                  position: badge.position,
+                };
+                array[found] = temp;
+              }
+              return { badges: array };
+            }),
+          mint: (badge) =>
+            set((state) => {
+              const found = state.badges.findIndex(
+                (b) => b.tokenId === badge.tokenId
+              );
+              if (found !== -1) {
+                state.badges[found].minted = true;
+              }
+              return { badges: [...state.badges] };
+            }),
+          reset: () =>
+            set({
+              badges: [...defaultBadges],
+              history: {},
+            }),
+          trackHistory: (data: string) => {
+            set((state) => {
+              state.history[data] = true;
+              return {
+                history: {
+                  ...state.history,
+                },
+              };
+            });
+          },
+        }),
+        {
+          name: "poi-storage",
+        }
+      )
     )
   )
 );

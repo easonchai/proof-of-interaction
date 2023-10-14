@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import clsx from "clsx";

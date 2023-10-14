@@ -15,6 +15,7 @@ export default function Badges({ className }: IBadges) {
   const [total, setTotal] = useState(3);
   const [play, setPlay] = useState(false);
   const { badges } = useGameStore();
+  const [tiles, setTiles] = useState<any>();
   const collectedStampCount = useMemo(
     () => badges.reduce((acc, badge) => acc + (badge.collected ? 1 : 0), 0),
     [badges]
@@ -37,8 +38,26 @@ export default function Badges({ className }: IBadges) {
     }
   }, [total, collectedStampCount]);
 
+  useEffect(() => {
+    setTiles(badges);
+
+    const unsub = useGameStore.subscribe(
+      (state) => state.badges,
+      (badges) => {
+        console.log("Badges updated");
+        setTiles(badges);
+      },
+      {
+        fireImmediately: true,
+      }
+    );
+
+    return () => unsub();
+  }, []);
+
   return (
-    badges && (
+    tiles &&
+    tiles.length > 0 && (
       <div
         className={clsx(
           `flex flex-col h-full items-center justify-center gap-y-8 my-8`,
@@ -49,15 +68,15 @@ export default function Badges({ className }: IBadges) {
           <div className="grid list-none m-0 p-0 grid-cols-hexagon">
             <Tile
               className="col-start-5 row-start-1 col-span-3 row-span-5"
-              tile={badges[0]}
+              tile={tiles[0]}
             />
             <Tile
               className="col-start-1 row-start-[11] col-span-3 row-span-5"
-              tile={badges[1]}
+              tile={tiles[1]}
             />
             <Tile
               className="col-start-[9] row-start-[11] col-span-3 row-span-5"
-              tile={badges[2]}
+              tile={tiles[2]}
             />
             <Image
               className="relative col-start-5 row-start-[7] col-span-3 row-span-5 mt-2 lg:mt-8"
