@@ -15,9 +15,13 @@ export interface Badge {
 
 interface GameState {
   badges: Badge[];
+  history: {
+    [key: string]: boolean;
+  };
   collect: (badge: { id: string; tokenId: string; position: number }) => void;
   mint: (badge: { tokenId: string }) => void;
   reset: () => void;
+  trackHistory: (data: string) => void;
 }
 
 const defaultBadges: Badge[] = [
@@ -58,6 +62,7 @@ const useGameStore = create<GameState>()(
     persist(
       (set) => ({
         badges: [...defaultBadges],
+        history: {},
         collect: (badge) =>
           set((state) => {
             const found = state.badges.findIndex((b) => b.id === badge.id);
@@ -82,6 +87,12 @@ const useGameStore = create<GameState>()(
           set({
             badges: [...defaultBadges],
           }),
+        trackHistory: (data: string) => {
+          set((state) => {
+            state.history[data] = true;
+            return { history: state.history };
+          });
+        },
       }),
       {
         name: "poi-storage",
