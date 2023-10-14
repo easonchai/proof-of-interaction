@@ -59,8 +59,7 @@ export default function Home() {
 
   const saveAction = async () => {
     if (signer) {
-      // const encryptedData = `e=${e}&c=${c}`;
-      const encryptedData = new Date().toString();
+      const encryptedData = `e=${e}&c=${c}`;
       const message = generatePoiMessageTemplate(encryptedData);
 
       // utils.id is equivalent to utils.keccak256(utils.toUtf8Bytes(VALUE))
