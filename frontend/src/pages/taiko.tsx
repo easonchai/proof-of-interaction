@@ -33,10 +33,9 @@ const useHasHydrated = () => {
 
   return hasHydrated;
 };
-const POI_ADDRESS = "0x377B94782f9fb202DE2b9c49a10c14dAFB312782";
-const ORACLE_ADDRESS = "0x0B12308d1ADfe3e0abc6Ed5DD6E19e7707E1143B";
-const NFT_ADDRESS = "0x507DFC84cDAE4f69d1bef2F7376224f2767fE09b";
-const AA_ADDRESS = "0x9fc5491dc9d5166edeacb0c10db1f87f3312202b";
+const POI_ADDRESS = "0xa1Ee1C974618d6459c3329B326074C82cDD3F952";
+const ORACLE_ADDRESS = "0x507DFC84cDAE4f69d1bef2F7376224f2767fE09b";
+const NFT_ADDRESS = "0x9fc5491Dc9D5166edeaCB0C10DB1f87F3312202b";
 const EXPLORER_URL = "https://explorer.jolnir.taiko.xyz/address";
 
 export default function Home() {
@@ -131,12 +130,12 @@ export default function Home() {
                 EntryPoint
               </h2>
               <Link
-                href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+                href={`${EXPLORER_URL}/0x21Cda22E89F689F8E503F6F802aa452Fce66c6ff`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className=""
               >
-                {AA_ADDRESS}
+                0x21Cda22E89F689F8E503F6F802aa452Fce66c6ff
               </Link>
             </div>
             <div className="flex flex-col">
@@ -144,25 +143,12 @@ export default function Home() {
                 AA Wallet Factory
               </h2>
               <Link
-                href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+                href={`${EXPLORER_URL}/0xf1F9dC41407183AE2706e4618CA3A30bd1A644d2`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className=""
               >
-                {AA_ADDRESS}
-              </Link>
-            </div>
-            <div className="flex flex-col">
-              <h2 className="font-bold text-brand-primary text-lg">
-                Paymaster
-              </h2>
-              <Link
-                href={`${EXPLORER_URL}/${AA_ADDRESS}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className=""
-              >
-                {AA_ADDRESS}
+                0xf1F9dC41407183AE2706e4618CA3A30bd1A644d2
               </Link>
             </div>
           </div>
