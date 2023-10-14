@@ -27,4 +27,8 @@ contract LocationBasedMinting is ERC721 {
     function setBaseURI(string memory _baseUri) public onlyOwner {
         baseURI = _baseUri;
     }
+
+    function setOwner(address _owner) public onlyOwner {
+        owner = _owner;
+    }
 }

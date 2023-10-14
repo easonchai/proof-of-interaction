@@ -42,8 +42,9 @@ async function main() {
 
   // signer.sendTransaction(tx);
 
-  poi.setNFTAddress(nft.target);
-  poi.setOracleAddress(oracle.target);
+  await poi.setNFTAddress(nft.target);
+  await poi.setOracleAddress(oracle.target);
+  await nft.setOwner(poi.target);
   console.log("✅ Proof of Interaction contract configured\n");
 }
 
