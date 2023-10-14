@@ -84,7 +84,7 @@ export default function Home() {
             <Link href="/">&lt; Back</Link>
             <div className="flex flex-col">
               <h1 className="font-bold text-2xl text-brand-primary">
-                Smart Contract Addresses
+                Taiko Smart Contract Addresses
               </h1>
               <p>Click on the address to navigate to the block explorer</p>
             </div>
@@ -152,6 +152,15 @@ export default function Home() {
               </Link>
             </div>
           </div>
+          <Image
+            className="mb-4"
+            src="/assets/taiko-tile.png"
+            alt="Taiko Logo"
+            width={180}
+            height={180}
+            priority
+          />
+          <p>We ❤️ Taiko, and so should you!</p>
         </main>
       ) : (
         <></>
