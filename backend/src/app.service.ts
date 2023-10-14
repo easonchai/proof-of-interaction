@@ -44,7 +44,7 @@ export class AppService {
         return {
           ...defaultTokenMetadata,
           name: `✨ Proof of Interaction`,
-          image: 'https://proofofinteraction.xyz/special.png',
+          image: 'https://proofofinteraction.xyz/nft/special.png',
           attributes: [
             {
               trait_type: 'Type',
