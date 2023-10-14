@@ -1,0 +1,50 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik:v2.9
+    container_name: 'traefik'
+    restart: always
+    command:
+      - '--accesslog=true'
+      - '--accesslog.filepath=/traefik/logs/access.log'
+      - '--api.insecure=true'
+      - '--providers.docker=true'
+      - '--providers.docker.exposedbydefault=false'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.web.http.redirections.entryPoint.to=websecure'
+      - '--entrypoints.web.http.redirections.entryPoint.scheme=https'
+      - '--entrypoints.websecure.address=:443'
+      - '--certificatesresolvers.myresolver.acme.tlschallenge=true'
+      - '--certificatesresolvers.myresolver.acme.email=elvtdnft@gmail.com'
+      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '8080:8080'
+    volumes:
+      - './letsencrypt:/letsencrypt'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    networks:
+      - mb
+  poi:
+    container_name: poi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.poi.rule=Host(`api.proofofinteraction.xyz`)'
+      - 'traefik.http.routers.poi.tls.certresolver=myresolver'
+      - 'traefik.http.services.poi.loadbalancer.server.port=3000'
+    restart: on-failure
+    env_file:
+      - .env
+    ports:
+      - 3000:3000
+    networks:
+      - mb
+
+networks:
+  mb:
