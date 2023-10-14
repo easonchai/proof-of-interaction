@@ -57,4 +57,10 @@ There is plenty more to talk about, but the best way is to just explore the repo
 - [Frontend](./frontend/)
 - [Smart Contracts](./smart-contracts/)
 
+---
+
+# Final Notes
+
+We do hope that this can grow to make an impact on Ethereum's community as a whole and propel the growth of this space! 🚀
+
 Made with ❤️ by Team POISON 🔥
