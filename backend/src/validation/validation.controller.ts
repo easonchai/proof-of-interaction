@@ -23,9 +23,16 @@ export class ValidationController {
         await this.validationService.saveHashedData(body, true);
         console.log('✅ Data saved successfully');
       }
+      return {
+        id: data.uid,
+        tokenId: BigInt(body.encryptedData).toString(),
+      };
     } catch (err) {
       await this.validationService.saveHashedData(body, false);
       console.log('❌ Data invalid');
+      return {
+        id: null,
+      };
     }
   }
 
@@ -38,9 +45,16 @@ export class ValidationController {
         await this.validationService.saveHashedData(body, true);
         console.log('✅ Data saved successfully');
       }
+      return {
+        id: data.uid,
+        tokenId: BigInt(body.encryptedData).toString(),
+      };
     } catch (err) {
       await this.validationService.saveHashedData(body, false);
       console.log('❌ Data invalid');
+      return {
+        id: null,
+      };
     }
   }
 
