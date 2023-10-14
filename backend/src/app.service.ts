@@ -29,7 +29,7 @@ export class AppService {
       description:
         'A unique NFT representing a verifiable Proof of Interaction. Each token embodies a moment, a place, and an action that can never be replicated.',
       external_url: 'https://proofofinteraction.xyz/',
-      image: 'https://proofofinteraction.xyz/basic.png',
+      image: 'https://proofofinteraction.xyz/nft/basic.png',
       name: `Proof of Interaction`,
       attributes: [
         {
