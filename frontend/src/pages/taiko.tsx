@@ -21,6 +21,7 @@ import theme from "@/styles/thirdwebConnect";
 import BaseModal from "@/components/BaseModal";
 import useGameStore from "../../utils/store";
 import Badges from "@/components/Badges";
+import Head from "next/head";
 
 const font = DM_Sans({ subsets: ["latin"] });
 const useHasHydrated = () => {
@@ -41,121 +42,134 @@ const EXPLORER_URL = "https://explorer.jolnir.taiko.xyz/address";
 export default function Home() {
   const hasHydrated = useHasHydrated();
 
-  return hasHydrated ? (
-    <main
-      className={`flex min-h-screen flex-col items-center px-4 py-8 lg:px-20 lg:py-16 text-brand-primaryDark ${font.className}`}
-    >
-      <header className="flex flex-row w-full items-center justify-between">
-        <Link
-          href="/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col"
-        >
-          <h1 className="font-bold text-lg lg:text-2xl mb-2 text-brand-primary">
-            Proof Of Interaction
-          </h1>
-          <span className="pointer-events-none flex place-items-center gap-2 lg:pointer-events-auto text-sm">
-            By POISON 🔥
-          </span>
-        </Link>
-        <ConnectWallet
-          theme={theme}
-          btnTitle={"Log In To Play"}
-          modalTitle={"Log In via"}
-          switchToActiveChain={true}
-          modalSize={"wide"}
-          welcomeScreen={{
-            subtitle:
-              "Login with your email or continue as guest to get started",
-            title: "Experience the power of Proof of Interaction",
-          }}
-          // modalTitleIconUrl={"asdasd"}
-        />
-      </header>
-      <div className="flex flex-col my-16 gap-y-6 w-full items-start justify-start">
-        <Link href="/">&lt; Back</Link>
-        <div className="flex flex-col">
-          <h1 className="font-bold text-2xl text-brand-primary">
-            Smart Contract Addresses
-          </h1>
-          <p>Click on the address to navigate to the block explorer</p>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-brand-primary text-lg">
-            Proof Of Interaction
-          </h2>
-          <Link
-            href={`${EXPLORER_URL}/${POI_ADDRESS}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            {POI_ADDRESS}
-          </Link>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-brand-primary text-lg">Oracle</h2>
-          <Link
-            href={`${EXPLORER_URL}/${ORACLE_ADDRESS}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            {ORACLE_ADDRESS}
-          </Link>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-brand-primary text-lg">
-            Location Based NFT
-          </h2>
-          <Link
-            href={`${EXPLORER_URL}/${NFT_ADDRESS}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            {NFT_ADDRESS}
-          </Link>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-brand-primary text-lg">EntryPoint</h2>
-          <Link
-            href={`${EXPLORER_URL}/${AA_ADDRESS}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            {AA_ADDRESS}
-          </Link>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-brand-primary text-lg">
-            AA Wallet Factory
-          </h2>
-          <Link
-            href={`${EXPLORER_URL}/${AA_ADDRESS}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            {AA_ADDRESS}
-          </Link>
-        </div>
-        <div className="flex flex-col">
-          <h2 className="font-bold text-brand-primary text-lg">Paymaster</h2>
-          <Link
-            href={`${EXPLORER_URL}/${AA_ADDRESS}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className=""
-          >
-            {AA_ADDRESS}
-          </Link>
-        </div>
+  return (
+    <>
+      <div>
+        <Head>
+          <title>Taiko Deployments | Proof of Interaction - POISON 🔥</title>
+        </Head>
       </div>
-    </main>
-  ) : (
-    <></>
+      {hasHydrated ? (
+        <main
+          className={`flex min-h-screen flex-col items-center px-4 py-8 lg:px-20 lg:py-16 text-brand-primaryDark ${font.className}`}
+        >
+          <header className="flex flex-row w-full items-center justify-between">
+            <Link
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col"
+            >
+              <h1 className="font-bold text-lg lg:text-2xl mb-2 text-brand-primary">
+                Proof Of Interaction
+              </h1>
+              <span className="pointer-events-none flex place-items-center gap-2 lg:pointer-events-auto text-sm">
+                By POISON 🔥
+              </span>
+            </Link>
+            <ConnectWallet
+              theme={theme}
+              btnTitle={"Log In To Play"}
+              modalTitle={"Log In via"}
+              switchToActiveChain={true}
+              modalSize={"wide"}
+              welcomeScreen={{
+                subtitle:
+                  "Login with your email or continue as guest to get started",
+                title: "Experience the power of Proof of Interaction",
+              }}
+              // modalTitleIconUrl={"asdasd"}
+            />
+          </header>
+          <div className="flex flex-col my-16 gap-y-6 w-full items-start justify-start">
+            <Link href="/">&lt; Back</Link>
+            <div className="flex flex-col">
+              <h1 className="font-bold text-2xl text-brand-primary">
+                Smart Contract Addresses
+              </h1>
+              <p>Click on the address to navigate to the block explorer</p>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-brand-primary text-lg">
+                Proof Of Interaction
+              </h2>
+              <Link
+                href={`${EXPLORER_URL}/${POI_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                {POI_ADDRESS}
+              </Link>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-brand-primary text-lg">Oracle</h2>
+              <Link
+                href={`${EXPLORER_URL}/${ORACLE_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                {ORACLE_ADDRESS}
+              </Link>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-brand-primary text-lg">
+                Location Based NFT
+              </h2>
+              <Link
+                href={`${EXPLORER_URL}/${NFT_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                {NFT_ADDRESS}
+              </Link>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-brand-primary text-lg">
+                EntryPoint
+              </h2>
+              <Link
+                href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                {AA_ADDRESS}
+              </Link>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-brand-primary text-lg">
+                AA Wallet Factory
+              </h2>
+              <Link
+                href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                {AA_ADDRESS}
+              </Link>
+            </div>
+            <div className="flex flex-col">
+              <h2 className="font-bold text-brand-primary text-lg">
+                Paymaster
+              </h2>
+              <Link
+                href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className=""
+              >
+                {AA_ADDRESS}
+              </Link>
+            </div>
+          </div>
+        </main>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
