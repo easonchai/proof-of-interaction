@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import type {} from "@redux-devtools/extension"; // required for devtools typing
+// import type {} from "@redux-devtools/extension"; // required for devtools typing
 
-interface Badge {
+export interface Badge {
   id: string;
   name: string;
   imageUrl: string;
@@ -20,21 +20,21 @@ const defaultBadges: Badge[] = [
   {
     id: "04441ADA811390",
     name: "ETHKL Nasi Lemak",
-    imageUrl: "https://i.imgur.com/2t0tj2c.png",
+    imageUrl: "/assets/eth-tile.png",
     tokenId: undefined,
     collected: false,
   },
   {
     id: "2",
     name: "Taiko",
-    imageUrl: "https://i.imgur.com/2t0tj2c.png",
+    imageUrl: "/assets/mantle-tile.png",
     tokenId: undefined,
     collected: false,
   },
   {
     id: "3",
     name: "Mantle",
-    imageUrl: "https://i.imgur.com/2t0tj2c.png",
+    imageUrl: "/assets/taiko-tile.png",
     tokenId: undefined,
     collected: false,
   },
