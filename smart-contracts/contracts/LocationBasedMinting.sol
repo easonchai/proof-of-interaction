@@ -4,10 +4,16 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract LocationBasedMinting is ERC721 {
     address public owner;
+    address public minter;
     string public baseURI;
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can mint");
+        require(msg.sender == owner, "Only owner can do admin actions");
+        _;
+    }
+
+    modifier onlyMinter() {
+        require(msg.sender == minter, "Only minter can mint");
         _;
     }
 
@@ -16,7 +22,7 @@ contract LocationBasedMinting is ERC721 {
         owner = _owner;
     }
 
-    function mint(address to, uint256 tokenId) public onlyOwner {
+    function mint(address to, uint256 tokenId) public onlyMinter {
         _mint(to, tokenId);
     }
 
@@ -30,5 +36,9 @@ contract LocationBasedMinting is ERC721 {
 
     function setOwner(address _owner) public onlyOwner {
         owner = _owner;
+    }
+
+    function setMinter(address _minter) public onlyOwner {
+        minter = _minter;
     }
 }

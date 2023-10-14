@@ -3,8 +3,10 @@ import { ethers, ethernal, network } from "hardhat";
 async function main() {
   const signer = await ethers.provider.getSigner();
   const address = await signer.getAddress();
+  const poiVerifierUrl = "https://api.proofofinteraction.xyz/validation/";
+  const nftBaseUri = "https://api.proofofinteraction.com/nft/";
   const poi = await ethers.deployContract("ProofOfInteraction", [
-    ethers.id("https://google.com"),
+    poiVerifierUrl,
   ]);
   await poi.waitForDeployment();
 
@@ -27,7 +29,7 @@ async function main() {
   const LocationBasedMinting = await ethers.getContractFactory(
     "LocationBasedMinting"
   );
-  const nft = await LocationBasedMinting.deploy("https://google.com/", address);
+  const nft = await LocationBasedMinting.deploy(nftBaseUri, address);
   await nft.waitForDeployment();
   console.log(
     `📍 Location-based Minting NFT contract deployed to: ${nft.target}\n`
@@ -44,8 +46,19 @@ async function main() {
 
   await poi.setNFTAddress(nft.target);
   await poi.setOracleAddress(oracle.target);
-  await nft.setOwner(poi.target);
+  await nft.setOwner(address);
+  await nft.setMinter(poi.target);
   console.log("✅ Proof of Interaction contract configured\n");
+
+  console.log(
+    `npx hardhat verify --network opTest ${poi.target} ${poiVerifierUrl}`
+  );
+  console.log(
+    `npx hardhat verify --network opTest --constructor-args utils/oracle.arguments.js ${oracle.target}`
+  );
+  console.log(
+    `npx hardhat verify --network opTest ${nft.target} "${nftBaseUri}" "${address}"`
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere

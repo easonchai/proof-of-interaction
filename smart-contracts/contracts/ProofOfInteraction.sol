@@ -8,7 +8,7 @@ contract ProofOfInteraction {
      * This is arbitrary, meaning that it could be a link to their site, to their verifying link, etc. 
      * It can also be in a different format/structure if it makes more sense that way!
      */
-    bytes32 public verifierInfo;
+    string public verifierInfo;
 
     /**
      * From this mapping, we get to ensure that if the hash already exists, most likely its already interacted with, 
@@ -31,7 +31,7 @@ contract ProofOfInteraction {
     event Interaction(address interactor, bytes32 data);
 
     // In this example, we will use verifier info as the verifierUrl
-    constructor(bytes32 verifierUrl) {
+    constructor(string memory verifierUrl) {
         verifierInfo = verifierUrl;
         owner = msg.sender;
     }

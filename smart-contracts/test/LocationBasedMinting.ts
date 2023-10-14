@@ -45,8 +45,10 @@ describe("Location Based Minting", function () {
   describe("Mint", function () {
     describe("Should allow only owner to mint NFT", function () {
       it("Should mint the NFT", async function () {
-        const { nft, tokenId, otherAccount } = await loadFixture(deployLBM);
-
+        const { nft, tokenId, otherAccount, owner } = await loadFixture(
+          deployLBM
+        );
+        await nft.setMinter(owner.address);
         await expect(await nft.mint(otherAccount.address, tokenId));
         await expect(await nft.ownerOf(tokenId)).equal(otherAccount.address);
       });
@@ -56,7 +58,7 @@ describe("Location Based Minting", function () {
 
         await expect(
           nft.connect(otherAccount).mint(otherAccount.address, tokenId)
-        ).revertedWith("Only owner can mint");
+        ).revertedWith("Only minter can mint");
       });
     });
   });

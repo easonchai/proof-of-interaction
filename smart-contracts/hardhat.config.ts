@@ -2,9 +2,8 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-ethernal";
 import "@nomicfoundation/hardhat-verify";
-import "hardhat-gas-reporter";
+// import "hardhat-gas-reporter";
 import * as dotenv from "dotenv";
-import { ethers } from "hardhat";
 
 dotenv.config();
 
@@ -80,9 +79,9 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  gasReporter: {
-    enabled: true,
-  },
+  // gasReporter: {
+  //   enabled: true,
+  // },
   // ethernal: {
   //   apiToken: process.env.ETHERNAL_API_KEY,
   //   disableSync: false, // If set to true, plugin will not sync blocks & txs
