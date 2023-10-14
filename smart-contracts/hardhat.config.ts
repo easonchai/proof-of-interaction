@@ -77,6 +77,14 @@ const config: HardhatUserConfig = {
           browserURL: "https://explorer.jolnir.taiko.xyz",
         },
       },
+      {
+        network: "mantleTest",
+        chainId: 5001,
+        urls: {
+          apiURL: "https://explorer.testnet.mantle.xyz/api",
+          browserURL: "https://explorer.testnet.mantle.xyz",
+        },
+      },
     ],
   },
   // gasReporter: {
