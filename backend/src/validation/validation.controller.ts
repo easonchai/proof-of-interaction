@@ -26,6 +26,7 @@ export class ValidationController {
       return {
         id: data.uid,
         tokenId: BigInt(body.encryptedData).toString(),
+        position: data.reads,
       };
     } catch (err) {
       await this.validationService.saveHashedData(body, false);

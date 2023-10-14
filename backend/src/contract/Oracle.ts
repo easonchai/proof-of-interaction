@@ -1,7 +1,7 @@
 const Oracle = {
   _format: 'hh-sol-artifact-1',
   contractName: 'Oracle',
-  address: '0x0B12308d1ADfe3e0abc6Ed5DD6E19e7707E1143B',
+  address: '0xFa41eD391D157bAddbA6bb60a294d28C4165f007',
   sourceName: 'contracts/Oracle.sol',
   abi: [
     {
