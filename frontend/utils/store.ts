@@ -36,7 +36,7 @@ const defaultBadges: Badge[] = [
     minted: false,
   },
   {
-    id: "2",
+    id: "043B19DA811390",
     name: "Taiko",
     imageUrl: "/assets/taiko-tile.png",
     hint: "Where woven woods and cryptos meet, your prize lies subtly neat.",
@@ -46,7 +46,7 @@ const defaultBadges: Badge[] = [
     minted: false,
   },
   {
-    id: "3",
+    id: "044D1ADA811390",
     name: "Mantle",
     imageUrl: "/assets/mantle-tile.png",
     hint: "Past the symbols of esteem, lies the treasure of your dream.",
