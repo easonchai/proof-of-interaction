@@ -124,7 +124,7 @@ export default function Tile({ tile, className }: ITile) {
               />
             </div>
             {tile.position && (
-              <div className="flex flex-col w-full items-start">
+              <div className="flex flex-col w-full items-center">
                 <p className="text-xl font-bold text-brand-primary text-center">
                   Position #{tile.position}
                 </p>
