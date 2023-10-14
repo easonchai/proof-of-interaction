@@ -10,7 +10,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/:tokenId')
+  @Get('/nft/:tokenId')
   async getTokenMetadata(@Param('tokenId') tokenId: string): Promise<any> {
     return await this.appService.getTokenMetadata(tokenId);
   }

@@ -56,7 +56,7 @@ export class OracleService {
     // For this instance, it would be locally, so I will just call a function
     const result = await validationService.validateHashedData(hashedData);
     await this.oracleContract.saveValidationRequest(
-      `https://example-api.com/validate/${result}`,
+      `https://proofofinteraction.xyz/validation/${result}`,
       hashedData,
       result,
     );
