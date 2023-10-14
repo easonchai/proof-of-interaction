@@ -20,6 +20,9 @@ const config: Config = {
           secondary: "#64748b",
         },
       },
+      gridTemplateColumns: {
+        hexagon: "repeat(5, 5fr 1fr) 5fr",
+      },
     },
   },
   plugins: [],

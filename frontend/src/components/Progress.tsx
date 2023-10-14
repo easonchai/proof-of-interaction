@@ -24,7 +24,7 @@ const ProgressBar = ({ percentage, max = 100, className }: IProgressBar) => {
       max={max}
     >
       <Progress.Indicator
-        className="bg-success w-full h-full transition-transform duration-[660ms] ease-[cubic-bezier(0.65, 0, 0.35, 1)] rounded-full"
+        className="bg-brand-primary w-full h-full transition-transform duration-[660ms] ease-[cubic-bezier(0.65, 0, 0.35, 1)] rounded-full"
         style={{
           transform: `translateX(-${
             100 - (Math.min(percentage, max) / max) * 100
