@@ -23,6 +23,9 @@ const config: Config = {
       gridTemplateColumns: {
         hexagon: "repeat(5, 5fr 1fr) 5fr",
       },
+      dropShadow: {
+        claimed: "0px 4px 12px rgba(249, 166, 6, 0.50)",
+      },
     },
   },
   plugins: [],

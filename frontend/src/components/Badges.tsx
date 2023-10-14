@@ -5,14 +5,15 @@ import clsx from "clsx";
 import useGameStore from "../../utils/store";
 import Tile from "./Tile";
 import Image from "next/image";
+import Confetti from "./Confetti";
 
 interface IBadges {
   className?: string;
-  checkpoints: any[];
 }
 
-export default function Badges({ className, checkpoints }: IBadges) {
-  const [total, setTotal] = useState(1);
+export default function Badges({ className }: IBadges) {
+  const [total, setTotal] = useState(3);
+  const [play, setPlay] = useState(false);
   const { badges } = useGameStore();
   const collectedStampCount = useMemo(
     () => badges.reduce((acc, badge) => acc + (badge.collected ? 1 : 0), 0),
@@ -24,8 +25,17 @@ export default function Badges({ className, checkpoints }: IBadges) {
   );
 
   useEffect(() => {
-    setTotal(checkpoints.length);
-  }, [checkpoints]);
+    setTotal(badges.length);
+  }, [badges]);
+
+  useEffect(() => {
+    if (total > 0 && total - collectedStampCount === 0) {
+      setPlay(true);
+      setTimeout(() => {
+        setPlay(false);
+      }, 7000);
+    }
+  }, [total, collectedStampCount]);
 
   return (
     badges && (
@@ -39,15 +49,15 @@ export default function Badges({ className, checkpoints }: IBadges) {
           <div className="grid list-none m-0 p-0 grid-cols-hexagon">
             <Tile
               className="col-start-5 row-start-1 col-span-3 row-span-5"
-              tile={checkpoints[0]}
+              tile={badges[0]}
             />
             <Tile
               className="col-start-1 row-start-[11] col-span-3 row-span-5"
-              tile={checkpoints[1]}
+              tile={badges[1]}
             />
             <Tile
               className="col-start-[9] row-start-[11] col-span-3 row-span-5"
-              tile={checkpoints[2]}
+              tile={badges[2]}
             />
             <Image
               className="relative col-start-5 row-start-[7] col-span-3 row-span-5 mt-2 lg:mt-8"
@@ -70,6 +80,8 @@ export default function Badges({ className, checkpoints }: IBadges) {
               : `All treasure found! 🎉`}
           </p>
         </div>
+
+        <Confetti play={play} />
       </div>
     )
   );

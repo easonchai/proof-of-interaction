@@ -3,26 +3,17 @@ import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import clsx from "clsx";
-import useGameStore from "../../utils/store";
-
-interface IEntity {
-  id: string;
-  name: string;
-  position: number;
-  hint?: string;
-  metadata?: any;
-}
+import useGameStore, { Badge } from "../../utils/store";
 
 interface ITile {
-  tile: IEntity;
+  tile: Badge;
   className?: string;
 }
 
 export default function Tile({ tile, className }: ITile) {
-  const { badges } = useGameStore();
   const found = useMemo(() => {
-    return !!badges.find((badge) => badge.id === tile.id)?.collected;
-  }, [badges, tile]);
+    return tile.collected;
+  }, [tile]);
   const type = useMemo(() => {
     if (found) return "Info";
     return "Hint";
@@ -30,36 +21,20 @@ export default function Tile({ tile, className }: ITile) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div
+    <button
       className={clsx(
-        "relative w-full md:max-w-[192px] flex items-center justify-center",
+        "relative w-full md:max-w-[192px] flex items-center justify-center active:scale-90 transition-transform",
         className
       )}
       onClick={() => setIsOpen(true)}
     >
-      <div className="absolute w-full h-full aspect-square flex items-center justify-center">
-        {found ? (
-          <Image
-            src={tile.metadata ? tile.metadata.imageUrl : "/location-1.png"}
-            alt=""
-            fill
-          />
-        ) : (
-          <Image
-            src="/assets/lock.svg"
-            alt=""
-            width={28}
-            height={32}
-            className="max-w-[50%]"
-          />
-        )}
-      </div>
       <Image
-        src="/assets/locked-tile.svg"
+        src={found ? tile.imageUrl : "/assets/locked-tile.svg"}
         alt=""
         width={384}
         height={384}
         layout="responsive"
+        className={clsx(found ? "drop-shadow-claimed" : "")}
       />
       {/* {type === "Hint" ? (
         <HintModal
@@ -76,6 +51,6 @@ export default function Tile({ tile, className }: ITile) {
           setIsOpen={setIsOpen}
         />
       )} */}
-    </div>
+    </button>
   );
 }

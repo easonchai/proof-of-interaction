@@ -75,7 +75,7 @@ export default function Confetti({ play }: IConfetti) {
     } else {
       stopAnimation();
     }
-  }, [play]);
+  }, [play, startAnimation, stopAnimation]);
 
   return <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />;
 }
