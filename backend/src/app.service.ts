@@ -27,9 +27,9 @@ export class AppService {
 
     const defaultTokenMetadata = {
       description:
-        'A unique NFT representing a verifiable proof of interaction. Each token embodies a moment, a place, and an action that can never be replicated.',
-      external_url: 'https://proofofinteraction.io/[TOKEN_ID]',
-      image: 'https://storage.yourdomain.com/proofofinteraction/[TOKEN_ID].png',
+        'A unique NFT representing a verifiable Proof of Interaction. Each token embodies a moment, a place, and an action that can never be replicated.',
+      external_url: 'https://proofofinteraction.xyz/',
+      image: 'https://proofofinteraction.xyz/basic.png',
       name: `Proof of Interaction`,
       attributes: [
         {
@@ -44,6 +44,7 @@ export class AppService {
         return {
           ...defaultTokenMetadata,
           name: `✨ Proof of Interaction`,
+          image: 'https://proofofinteraction.xyz/special.png',
           attributes: [
             {
               trait_type: 'Type',
