@@ -31,7 +31,7 @@ async function main() {
     ethers.provider
   );
   const poiVerifierUrl = "https://api.proofofinteraction.xyz/validation/";
-  const nftBaseUri = "https://api.proofofinteraction.com/nft/";
+  const nftBaseUri = "https://api.proofofinteraction.xyz/nft/";
   const poi = await ethers.deployContract("ProofOfInteraction", [
     poiVerifierUrl,
   ]);

@@ -10,6 +10,7 @@ import ProofOfInteraction from "@/contract/ProofOfInteraction";
 import { ethers } from "ethers";
 import theme from "@/styles/thirdwebConnect";
 import HintModal from "./HintModal";
+import Link from "next/link";
 
 interface ITile {
   tile: Badge;
@@ -124,10 +125,10 @@ export default function Tile({ tile, className }: ITile) {
             </div>
             {tile.position && (
               <div className="flex flex-col w-full items-start">
-                <p className="text-xl font-bold text-brand-primary">
+                <p className="text-xl font-bold text-brand-primary text-center">
                   Position #{tile.position}
                 </p>
-                <p className="text-brand-primaryDark">
+                <p className="text-brand-primaryDark text-center">
                   You&apos;re the {getPositionSuffix(tile.position)} person who
                   found this treasure!
                 </p>
@@ -178,6 +179,26 @@ export default function Tile({ tile, className }: ITile) {
                 ? "Already minted!"
                 : "Claim as NFT"}
             </Web3Button>
+            {tile.minted && (
+              <div className="flex flex-col gap-y-4 my-2">
+                <Link
+                  href={`https://api.proofofinteraction.xyz/nft/${tile.tokenId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=""
+                >
+                  View Metadata
+                </Link>
+                <Link
+                  href={`https://testnets.opensea.io/assets/optimism-goerli/0x05c03a8bb760cfbba289a19086d9bb0a766da261/${tile.tokenId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className=""
+                >
+                  View on Opensea
+                </Link>
+              </div>
+            )}
             <button
               className="font-bold rounded-md px-6 py-3 text-brand-primary"
               onClick={() => setIsOpen(false)}
