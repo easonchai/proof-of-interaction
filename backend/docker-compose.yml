@@ -26,25 +26,25 @@ services:
       - './letsencrypt:/letsencrypt'
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     networks:
-      - mb
-  poi:
-    container_name: poi
+      - proof-of-interaction
+  backend:
+    container_name: backend
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.poi.rule=Host(`api.proofofinteraction.xyz`)'
-      - 'traefik.http.routers.poi.tls.certresolver=myresolver'
-      - 'traefik.http.services.poi.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.backend.rule=Host(`api.proofofinteraction.xyz`)'
+      - 'traefik.http.routers.backend.tls.certresolver=myresolver'
+      - 'traefik.http.services.backend.loadbalancer.server.port=3000'
     restart: on-failure
     env_file:
       - .env
     ports:
       - 3000:3000
     networks:
-      - mb
+      - proof-of-interaction
 
 networks:
-  mb:
+  proof-of-interaction:
