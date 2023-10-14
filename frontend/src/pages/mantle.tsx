@@ -119,9 +119,31 @@ export default function Home() {
           </Link>
         </div>
         <div className="flex flex-col">
+          <h2 className="font-bold text-brand-primary text-lg">EntryPoint</h2>
+          <Link
+            href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className=""
+          >
+            {AA_ADDRESS}
+          </Link>
+        </div>
+        <div className="flex flex-col">
           <h2 className="font-bold text-brand-primary text-lg">
             AA Wallet Factory
           </h2>
+          <Link
+            href={`${EXPLORER_URL}/${AA_ADDRESS}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className=""
+          >
+            {AA_ADDRESS}
+          </Link>
+        </div>
+        <div className="flex flex-col">
+          <h2 className="font-bold text-brand-primary text-lg">Paymaster</h2>
           <Link
             href={`${EXPLORER_URL}/${AA_ADDRESS}`}
             target="_blank"

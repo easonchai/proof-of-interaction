@@ -25,6 +25,7 @@ const config: Config = {
       },
       dropShadow: {
         claimed: "0px 4px 12px rgba(249, 166, 6, 0.50)",
+        brand: "0px 4px 12px rgba(36, 99, 235, 0.50)",
       },
     },
   },

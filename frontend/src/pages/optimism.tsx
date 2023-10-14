@@ -3,6 +3,8 @@ import { ConnectWallet } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import theme from "@/styles/thirdwebConnect";
+import ProofOfInteraction from "@/contract/ProofOfInteraction";
+import Oracle from "@/contract/Oracle";
 
 const font = DM_Sans({ subsets: ["latin"] });
 const useHasHydrated = () => {
@@ -14,9 +16,9 @@ const useHasHydrated = () => {
 
   return hasHydrated;
 };
-const POI_ADDRESS = "0x377B94782f9fb202DE2b9c49a10c14dAFB312782";
-const ORACLE_ADDRESS = "0x0B12308d1ADfe3e0abc6Ed5DD6E19e7707E1143B";
-const NFT_ADDRESS = "0x507DFC84cDAE4f69d1bef2F7376224f2767fE09b";
+const POI_ADDRESS = ProofOfInteraction.address;
+const ORACLE_ADDRESS = Oracle.address;
+const NFT_ADDRESS = "0xA1ef12f27d4F6B330eE1e75Ee5274E8D0f844AEf";
 const AA_ADDRESS = "0x9fc5491dc9d5166edeacb0c10db1f87f3312202b";
 const EXPLORER_URL = "https://goerli-optimism.etherscan.io/address";
 

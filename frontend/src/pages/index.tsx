@@ -90,6 +90,7 @@ export default function Home() {
         API.post("/validation/api", payload)
           .then((res) => {
             if (res && res.data) {
+              console.log(res.data);
               collect(res.data);
             }
             toast.success("Validation saved on API");
@@ -128,12 +129,15 @@ export default function Home() {
   // Check if wallet is new & not deployed yet
   // Thirdweb really need to up their game lmao, I can't keep searching through all their files to figure out how to do this
   useEffect(() => {
-    const erc4337Signer: any = signer;
-    if (erc4337Signer && erc4337Signer.smartAccountAPI) {
-      if (erc4337Signer.smartAccountAPI.isPhantom) {
-        setIsFirstTime(true);
+    const checkFirstTime = async () => {
+      const erc4337Signer: any = signer;
+      if (erc4337Signer && erc4337Signer.smartAccountAPI) {
+        if (await erc4337Signer.smartAccountAPI.checkAccountPhantom()) {
+          setIsFirstTime(true);
+        }
       }
-    }
+    };
+    checkFirstTime();
   }, [signer]);
 
   useEffect(() => {

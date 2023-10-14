@@ -93,7 +93,9 @@ export default function Tile({ tile, className }: ITile) {
                 layout="responsive"
               />
             </div>
-            <p className="text-brand-primaryDark">Hello I am under the water</p>
+            <p className="text-brand-primaryDark text-center italic">
+              {tile.hint}
+            </p>
             <button
               className="font-bold rounded-md px-6 py-3 text-brand-primary"
               onClick={() => setIsOpen(false)}
