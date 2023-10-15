@@ -55,7 +55,6 @@ export default function Home() {
               theme={theme}
               btnTitle={"Log In To Play"}
               modalTitle={"Log In via"}
-              switchToActiveChain={true}
               modalSize={"wide"}
               welcomeScreen={{
                 subtitle:
