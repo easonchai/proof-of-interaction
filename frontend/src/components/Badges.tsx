@@ -44,7 +44,6 @@ export default function Badges({ className }: IBadges) {
     const unsub = useGameStore.subscribe(
       (state) => state.badges,
       (badges) => {
-        console.log("Badges updated");
         setTiles(badges);
       },
       {

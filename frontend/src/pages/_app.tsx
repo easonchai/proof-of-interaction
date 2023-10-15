@@ -1,3 +1,4 @@
+import ChainContext from "@/context/Chain";
 import "@/styles/globals.css";
 import {
   MantleTestnet,
@@ -10,8 +11,10 @@ import {
   localWallet,
   embeddedWallet,
   metamaskWallet,
+  useChain,
 } from "@thirdweb-dev/react";
 import type { AppProps } from "next/app";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 const config = {
@@ -22,31 +25,35 @@ const config = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [selectedChain, setSelectedChain] = useState<any>(OptimismGoerli);
+
   return (
-    <ThirdwebProvider
-      clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
-      activeChain={OptimismGoerli}
-      supportedChains={[OptimismGoerli, TaikoJolnirL2, MantleTestnet]}
-      supportedWallets={[
-        smartWallet(
-          localWallet({
-            persist: true,
-          }),
-          config
-        ),
-        smartWallet(embeddedWallet(), config),
-        metamaskWallet(),
-      ]}
-      // sdkOptions={{
-      //   gassless: {
-      //     openzeppelin: {
-      //       relayerUrl: process.env.NEXT_PUBLIC_RELAYER_URL,
-      //     },
-      //   },
-      // }}
-    >
-      <Component {...pageProps} />
-      <Toaster position="top-center" reverseOrder={false} />
-    </ThirdwebProvider>
+    <ChainContext.Provider value={{ selectedChain, setSelectedChain }}>
+      <ThirdwebProvider
+        clientId={process.env.NEXT_PUBLIC_CLIENT_ID}
+        activeChain={selectedChain}
+        supportedChains={[OptimismGoerli, TaikoJolnirL2, MantleTestnet]}
+        supportedWallets={[
+          smartWallet(
+            localWallet({
+              persist: true,
+            }),
+            config
+          ),
+          smartWallet(embeddedWallet(), config),
+          metamaskWallet(),
+        ]}
+        // sdkOptions={{
+        //   gassless: {
+        //     openzeppelin: {
+        //       relayerUrl: process.env.NEXT_PUBLIC_RELAYER_URL,
+        //     },
+        //   },
+        // }}
+      >
+        <Component {...pageProps} />
+        <Toaster position="top-center" reverseOrder={false} />
+      </ThirdwebProvider>
+    </ChainContext.Provider>
   );
 }

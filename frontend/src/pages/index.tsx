@@ -7,8 +7,9 @@ import {
   useContractWrite,
   ConnectWallet,
   Web3Button,
+  useChain,
 } from "@thirdweb-dev/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { API } from "../../utils/axios";
@@ -23,6 +24,12 @@ import useGameStore from "../../utils/store";
 import Badges from "@/components/Badges";
 import Confetti from "@/components/Confetti";
 import Head from "next/head";
+import {
+  OptimismGoerli,
+  TaikoJolnirL2,
+  MantleTestnet,
+} from "@thirdweb-dev/chains";
+import ChainContext from "@/context/Chain";
 
 const font = DM_Sans({ subsets: ["latin"] });
 const useHasHydrated = () => {
@@ -40,10 +47,7 @@ export default function Home() {
   const { collect, history, trackHistory } = useGameStore();
   const hasHydrated = useHasHydrated();
   const signer = useSigner();
-  const { contract } = useContract(
-    ProofOfInteraction.address,
-    ProofOfInteraction.abi
-  );
+  const [contract, setContract] = useState<any>();
   const { mutateAsync, isLoading } = useContractWrite(
     contract,
     "saveInteraction"
@@ -57,7 +61,25 @@ export default function Home() {
   const [isFound, setIsFound] = useState<boolean>(false);
   const [toastId, setToastId] = useState<string | null>(null);
 
-  const saveAction = async () => {
+  const { selectedChain, setSelectedChain } = useContext(ChainContext);
+  const chain = useChain();
+
+  useEffect(() => {
+    if (chain?.chainId) {
+      if (chain.chainId === OptimismGoerli.chainId) {
+        setSelectedChain(OptimismGoerli);
+      } else if (chain.chainId === TaikoJolnirL2.chainId) {
+        setSelectedChain(TaikoJolnirL2);
+      } else if (chain.chainId === MantleTestnet.chainId) {
+        setSelectedChain(MantleTestnet);
+      } else {
+        setSelectedChain(OptimismGoerli);
+      }
+    }
+  }, [chain?.chainId]);
+
+  const saveAction = async (contract: any) => {
+    setContract(contract);
     if (signer) {
       const encryptedData = `e=${e}&c=${c}`;
       const message = generatePoiMessageTemplate(encryptedData);
@@ -85,7 +107,7 @@ export default function Home() {
         API.post("/validation/api", payload)
           .then((res) => {
             if (res && res.data) {
-              console.log(res.data);
+              // console.log(res.data);
               collect(res.data);
             }
             trackHistory(`e=${e}&c=${c}`);
@@ -97,7 +119,7 @@ export default function Home() {
           args: [hash, signature], // We store hash and signature so we can recover the original signer
         });
 
-        console.log(hash, "=>", signature);
+        // console.log(hash, "=>", signature);
       }
     }
   };
@@ -130,6 +152,16 @@ export default function Home() {
       }
     }
   }, [e, c]);
+
+  const getContractAddress = () => {
+    const help =
+      chain?.chainId === TaikoJolnirL2.chainId
+        ? "0xa1Ee1C974618d6459c3329B326074C82cDD3F952"
+        : chain?.chainId === MantleTestnet.chainId
+        ? "0x0A2134B97F973a2784B49e825E85EbD123a9fFD9"
+        : ProofOfInteraction.address;
+    return help;
+  };
 
   // Check if wallet is new & not deployed yet
   // Thirdweb really need to up their game lmao, I can't keep searching through all their files to figure out how to do this
@@ -174,7 +206,6 @@ export default function Home() {
               theme={theme}
               btnTitle={"Log In To Play"}
               modalTitle={"Log In via"}
-              switchToActiveChain={true}
               modalSize={"wide"}
               welcomeScreen={{
                 subtitle:
@@ -281,7 +312,7 @@ export default function Home() {
                     isLoading ? "!opacity-70 cursor-not-allowed" : ""
                   )}
                   isDisabled={isLoading}
-                  contractAddress={ProofOfInteraction.address}
+                  contractAddress={getContractAddress()}
                   contractAbi={ProofOfInteraction.abi}
                   action={saveAction}
                   onSuccess={() => {
